@@ -9,9 +9,7 @@ def sigmoid(x):
 	
 	return 1.0 / (1 + np.exp(-1 * x))
 
-def digit_rec(digit):
-	tetha = train_digit(digit)
-	print( sigmoid(tetha.T.dot(X)) )
+
 		
 def calc_loss_func_deriv(tetha , digit):
 	
@@ -24,16 +22,17 @@ def calc_loss_func_deriv(tetha , digit):
 	
 
 
-def  train_digit( digit):
+def train_digit( digit):
 	
 	tetha = np.zeros(feature_number)
 	
 	rate = 0.0001
 		
 	next_tetha = np.subtract( tetha , rate * calc_loss_func_deriv(tetha ,  digit) )
-	iteration=0
 	
-	while  abs( np.linalg.norm ( calc_loss_func_deriv(tetha, digit) ) ) > abs( np.linalg.norm(calc_loss_func_deriv(next_tetha , digit))  and iteration < 1 ) :
+	iteration = 0
+	max_iteration = 1000
+	while  abs( np.linalg.norm ( calc_loss_func_deriv(tetha, digit) ) ) > abs( np.linalg.norm(calc_loss_func_deriv(next_tetha , digit))) and iteration < max_iteration :
 		iteration+=1
 		tetha = np.subtract(tetha , rate * calc_loss_func_deriv(tetha, digit) ) 
 		next_tetha = np.subtract( next_tetha ,  rate * calc_loss_func_deriv(next_tetha , digit) )  	
@@ -41,3 +40,6 @@ def  train_digit( digit):
 		  		
 	return tetha
 
+#digits_tetha = np.array( [ train_digit(digit) for digit in range(1) ] )
+
+print( train_digit(1) )
