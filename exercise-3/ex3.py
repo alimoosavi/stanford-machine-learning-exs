@@ -1,20 +1,23 @@
 import numpy as np
 import pandas as pd
 
+
 dataset = np.array(pd.read_csv("train.csv" , header =[1, 2])) 
+#testset = np.array(pd.read_csv("test.csv" , header =[1, 2])) 
+
 X = dataset[:, 1:]
 feature_number = 784
  
 def sigmoid(x):
 	
-	sigm = 0.0
+	#sigm = 0.0
 	
-	try:
-		sigm = 1.0 / (1 + np.exp(-1 * x))
-	except:
-		sigm = 1 if x > 0 else 0
+	#try:
+	#	sigm = 1.0 / (1 + np.exp(-1 * x))
+	#except:
+	#	sigm = 1 if x > 0 else 0
 		
-	return sigm
+	return (1.0 / (1 + np.exp(-1 * np.float128(x))))
 
 
 		
@@ -47,6 +50,26 @@ def train_digit( digit):
 		  		
 	return tetha
 
-digits_tetha = [ train_digit(digit) for digit in range(10) ]
+digits_tetha = np.array( [ train_digit(digit) for digit in range(10) ] )
 
+def test_digit(digit):
+	
+	y_label = lambda y: 1 if y == digit else 0
+	
+	loss_function = lambda example: -1 * ( y_label(example[0]) * np.log( sigmoid( digits_tetha.dot( example[1:] ) ) ) 
+	+ (1-y_label(example[0])) * np.log( 1 - sigmoid( digits_tetha.dot( example[1:] ) )  ) )
+	
+	J = 0
+	
+	for example in dataset:
+		J += loss_function(example)
+		
+	J /= len(dataset)
+	
+	return J
+	
+	
+print(test_digit(5))
 
+		
+		
