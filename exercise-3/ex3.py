@@ -7,7 +7,14 @@ feature_number = 784
  
 def sigmoid(x):
 	
-	return 1.0 / (1 + np.exp(-1 * x))
+	sigm = 0.0
+	
+	try:
+		sigm = 1.0 / (1 + np.exp(-1 * x))
+	except:
+		sigm = 1 if x > 0 else 0
+		
+	return sigm
 
 
 		
@@ -26,7 +33,7 @@ def train_digit( digit):
 	
 	tetha = np.zeros(feature_number)
 	
-	rate = 0.0001
+	rate = 0.01
 		
 	next_tetha = np.subtract( tetha , rate * calc_loss_func_deriv(tetha ,  digit) )
 	
@@ -40,6 +47,6 @@ def train_digit( digit):
 		  		
 	return tetha
 
-#digits_tetha = np.array( [ train_digit(digit) for digit in range(1) ] )
+digits_tetha = [ train_digit(digit) for digit in range(10) ]
 
-print( train_digit(1) )
+
